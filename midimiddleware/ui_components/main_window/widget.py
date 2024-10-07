@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QLabel, QMainWindow
 
 from pyside6helpers import icons
 
-from midimiddleware.core.components import Components
+from midimiddleware.components.components import Components
 
 
 class MainWindow(QMainWindow):

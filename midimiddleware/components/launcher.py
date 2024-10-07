@@ -5,8 +5,9 @@ from pyside6helpers import css
 from pyside6helpers import resources as ps6_resources
 
 from midimiddleware.components import resources
-from midimiddleware.components.ui.main_window import MainWindow
-from midimiddleware.core.components import Components
+from midimiddleware.ui_components.main_window.factory import create_main_window
+from midimiddleware.components.components import Components
+from midimiddleware.ui_components.ui_components import UiComponents
 
 
 class Launcher:
@@ -18,8 +19,9 @@ class Launcher:
     def exec(self):
         app = QApplication()
         css.load_onto(app)
+        UiComponents().actions.create_actions(app)
 
-        main_window = MainWindow()
+        main_window = create_main_window(app)
         main_window.show()
 
         sys.exit(app.exec())
