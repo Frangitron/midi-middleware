@@ -15,4 +15,4 @@ jobs:
           python_ver: '3.12'
           spec: 'MIDI Middleware.spec'
           requirements: 'requirements.txt'
-          upload_exe_with_name: '__name__'
+          upload_exe_with_name: 'midimiddleware'
