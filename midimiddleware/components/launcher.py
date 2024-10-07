@@ -18,6 +18,9 @@ class Launcher:
 
     def exec(self):
         app = QApplication()
+        app.aboutToQuit.connect(Components().engine.stop)
+        app.aboutToQuit.connect(Components().port_selector.close)
+
         css.load_onto(app)
         UiComponents().actions.create_actions(app)
 

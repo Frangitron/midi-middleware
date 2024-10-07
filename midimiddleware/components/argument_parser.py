@@ -1,7 +1,7 @@
 import argparse
 import logging
 
-from midimiddleware.core.components import Components
+from midimiddleware.components.components import Components
 
 _logger = logging.getLogger(__name__)
 
