@@ -1,4 +1,5 @@
 import rtmidi
+import mido.backends.rtmidi  # this is for PyInstaller
 
 
 class PortSelector:
