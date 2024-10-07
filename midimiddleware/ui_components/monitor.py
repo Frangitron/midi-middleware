@@ -16,6 +16,7 @@ class Monitor(QWidget):
 
         self.button_add_to_table = QPushButton("Add to table")
         self.button_add_to_table.setIcon(icons.plus())
+        self.button_add_to_table.setEnabled(False)
 
         group_ = group.make_group(
             title="Monitor", orientation=Qt.Horizontal, widgets=[
