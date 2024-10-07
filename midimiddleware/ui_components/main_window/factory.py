@@ -13,7 +13,7 @@ def create_main_window(app: QApplication) -> MainWindow:
     menu_bar = main_window.menuBar()
     file_menu = menu_bar.addMenu("&File")
     file_menu.addAction(UiComponents().actions.new)
-    file_menu.addAction(UiComponents().actions.load)
+    file_menu.addAction(UiComponents().actions.open)
     file_menu.addAction(UiComponents().actions.save)
     file_menu.addSeparator()
     file_menu.addAction(UiComponents().actions.quit)

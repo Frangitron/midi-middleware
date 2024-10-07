@@ -52,3 +52,34 @@ class PortSelector:
         if self.virtual_out:
             self.virtual_out.close_port()
             self.virtual_out = None
+
+    def get_save_data(self) -> dict:
+        return {
+            "device_in": self.device_in_name,
+            "device_out": self.device_out_name,
+            "virtual_in": self.virtual_in_name,
+            "virtual_out": self.virtual_out_name
+        }
+
+    def init_with_saved_data(self, data: dict):
+        """
+        Reloads port lists and apply saved port selection (if ports are still available)
+        """
+        self.get_input_ports()
+        self.get_output_ports()
+
+        if data["device_in"] not in self._input_ports:
+            data["device_in"] = ""
+        if data["device_out"] not in self._output_ports:
+            data["device_out"] = ""
+        if data["virtual_in"] not in self._input_ports:
+            data["virtual_in"] = ""
+        if data["virtual_out"] not in self._output_ports:
+            data["virtual_out"] = ""
+
+        self.select_ports(
+            device_in=data["device_in"],
+            device_out=data["device_out"],
+            virtual_in=data["virtual_in"],
+            virtual_out=data["virtual_out"]
+        )
