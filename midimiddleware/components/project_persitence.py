@@ -16,6 +16,10 @@ class ProjectPersistence:
             with open(filepath, "r") as file:
                 data = json.load(file)
 
+            version = data.get("file_version", 0)
+            if version != 1:
+                raise RuntimeError(f"The project file is in the wrong version: {version}, expected 1")
+
             Components().port_selector.init_with_saved_data(
                 data["port_selector"]
             )
@@ -26,6 +30,7 @@ class ProjectPersistence:
         Components().engine.stop()
 
         data = {
+            "file_version": 1,
             "port_selector": Components().port_selector.get_save_data()
         }
         with open(filepath, "w") as file:
