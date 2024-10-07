@@ -34,13 +34,17 @@ class Engine:
 
         address = hash_message_address(message)
         if address not in self.translations:
-            self._device_out.send(message)
-            self._virtual_out.send(message)
+            if self._device_out is not None:
+                self._device_out.send(message)
+            if self._virtual_out is not None:
+                self._virtual_out.send(message)
             return
 
         translated_device, translated_virtual = self.translations[address].translate(message)
-        self._device_out.send(translated_device)
-        self._virtual_out.send(translated_virtual)
+        if self._device_out is not None:
+            self._device_out.send(translated_device)
+        if self._virtual_out is not None:
+            self._virtual_out.send(translated_virtual)
 
     def _open_ports(self):
         self._close_ports()
@@ -51,10 +55,14 @@ class Engine:
               f"{port_selector.virtual_in_name}, "
               f"{port_selector.virtual_out_name}"
         )
-        self._device_in = mido.open_input(port_selector.device_in_name, callback=traceback_print_wrapper(self._handle_device_in))
-        self._device_out = mido.open_output(port_selector.device_out_name)
-        self._virtual_in = mido.open_input(port_selector.virtual_in_name)
-        self._virtual_out = mido.open_output(port_selector.virtual_out_name)
+        if port_selector.device_in_name:
+            self._device_in = mido.open_input(port_selector.device_in_name, callback=traceback_print_wrapper(self._handle_device_in))
+        if port_selector.device_out_name:
+            self._device_out = mido.open_output(port_selector.device_out_name)
+        if port_selector.virtual_in_name:
+            self._virtual_in = mido.open_input(port_selector.virtual_in_name)
+        if port_selector.virtual_out_name:
+            self._virtual_out = mido.open_output(port_selector.virtual_out_name)
 
     def _close_ports(self):
         print(f"Closing ports")

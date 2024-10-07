@@ -74,12 +74,10 @@ class PortSelector(QWidget):
             self.virtual_in_port_combo_box.currentText(),
             self.virtual_out_port_combo_box.currentText()
         ]
-        if "" in selected_ports:
-            raise ValueError('All four ports must be selected')
 
         check_doubles = list()
         for port in selected_ports:
-            if port in check_doubles:
+            if port and port in check_doubles:
                 raise ValueError(f"A port can only be selected once: {port}")
             else:
                 check_doubles.append(port)
