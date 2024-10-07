@@ -2,8 +2,7 @@ name: PyInstaller (Windows)
 
 on:
   push:
-    tags:
-      - '**'
+    - '**'
 
 jobs:
   build:
