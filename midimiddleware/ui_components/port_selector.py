@@ -10,9 +10,13 @@ class PortSelector(QWidget):
         super().__init__(parent)
 
         self.device_in_port_combo_box = QComboBox()
+        self.device_in_port_combo_box.currentIndexChanged.connect(self.update_button_color)
         self.device_out_port_combo_box = QComboBox()
+        self.device_out_port_combo_box.currentIndexChanged.connect(self.update_button_color)
         self.virtual_in_port_combo_box = QComboBox()
+        self.virtual_in_port_combo_box.currentIndexChanged.connect(self.update_button_color)
         self.virtual_out_port_combo_box = QComboBox()
+        self.virtual_out_port_combo_box.currentIndexChanged.connect(self.update_button_color)
 
         self.reload_ports_button = QPushButton("Reload")
         self.reload_ports_button.setToolTip("Reload list of available MIDI ports")
@@ -90,3 +94,24 @@ class PortSelector(QWidget):
                 virtual_out=selected_ports[3]
             )
             Components().engine.start()
+
+        self.update_button_color()
+
+    def update_button_color(self):
+        combos = [
+            self.device_in_port_combo_box,
+            self.device_out_port_combo_box,
+            self.virtual_in_port_combo_box,
+            self.virtual_out_port_combo_box
+        ]
+        names = [
+            Components().port_selector.device_in_name,
+            Components().port_selector.device_out_name,
+            Components().port_selector.virtual_in_name,
+            Components().port_selector.virtual_out_name
+        ]
+        red_needed = [combo.currentText() != name for combo, name in zip(combos, names)]
+        if any(red_needed):
+            self.apply_button.setStyleSheet("background-color: rgb(128, 30, 30)")
+        else:
+            self.apply_button.setStyleSheet("")
