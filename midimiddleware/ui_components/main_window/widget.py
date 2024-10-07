@@ -1,6 +1,6 @@
 import os.path
 
-from PySide6.QtCore import QSettings
+from PySide6.QtCore import QSettings, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QLabel, QMainWindow
 
@@ -10,6 +10,8 @@ from midimiddleware.components.components import Components
 
 
 class MainWindow(QMainWindow):
+    shown = Signal()
+
     def __init__(self):
         super().__init__()
 
@@ -27,6 +29,10 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         self.save_geometry()
         super().closeEvent(event)
+        event.accept()
+
+    def showEvent(self, event):
+        self.shown.emit()
         event.accept()
 
     def save_geometry(self):

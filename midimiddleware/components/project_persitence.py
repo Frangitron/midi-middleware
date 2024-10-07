@@ -1,4 +1,5 @@
 import json
+import os.path
 
 from midimiddleware.components.components import Components
 
@@ -8,12 +9,13 @@ class ProjectPersistence:
     def open(self, filepath):
         Components().engine.stop()
 
-        with open(filepath, "r") as file:
-            data = json.load(file)
+        if filepath is not None and os.path.exists(filepath):
+            with open(filepath, "r") as file:
+                data = json.load(file)
 
-        Components().port_selector.init_with_saved_data(
-            data["port_selector"]
-        )
+            Components().port_selector.init_with_saved_data(
+                data["port_selector"]
+            )
 
         Components().engine.start()
 
