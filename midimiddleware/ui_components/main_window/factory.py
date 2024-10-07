@@ -19,5 +19,6 @@ def create_main_window(app: QApplication) -> MainWindow:
     file_menu.addAction(UiComponents().actions.quit)
 
     UiComponents().actions.new.setEnabled(False)
+    UiComponents().main_window = main_window
 
     return main_window

@@ -34,6 +34,7 @@ class PortSelector:
 
     def open(self):
         self.close()
+        print(f"Opening ports: {self.device_in_name}, {self.device_out_name}, {self.virtual_in_name}, {self.virtual_out_name}")
         self.device_in = rtmidi.MidiIn().open_port(self._input_ports.index(self.device_in_name))
         self.device_out = rtmidi.MidiOut().open_port(self._output_ports.index(self.device_out_name))
         self.virtual_in = rtmidi.MidiIn().open_port(self._input_ports.index(self.virtual_in_name))

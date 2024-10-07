@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QApplication
 from pyside6helpers import icons, load_save_dialog
 
 from midimiddleware.components.components import Components
+from midimiddleware.ui_components.ui_components import UiComponents
 
 
 class Actions(QObject):
@@ -24,14 +25,19 @@ class Actions(QObject):
         self.open = QAction(icons.folder(), "&Open project...")
         self.open.triggered.connect(load_save_dialog.make_open_hook(
             title="Open project", name_filter="JSON (*.json)", working_directory=os.path.expanduser("~"),
-            callback=Components().project_persistence.open
+            callback=_open_project, parent=UiComponents().main_window
         ))
 
         self.save = QAction(icons.diskette(), "&Save project...")
         self.save.triggered.connect(load_save_dialog.make_save_hook(
             title="Save project", name_filter="JSON (*.json)", working_directory=os.path.expanduser("~"),
-            callback=Components().project_persistence.save
+            callback=Components().project_persistence.save, parent=UiComponents().main_window
         ))
 
         self.quit = QAction(icons.right_arrow(), "&Quit")
         self.quit.triggered.connect(app.quit)
+
+
+def _open_project(filepath):
+    Components().project_persistence.open(filepath)
+    UiComponents().port_selector.reload_ports()
