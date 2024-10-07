@@ -21,11 +21,12 @@ class Actions(QObject):
 
     def create_actions(self, app: QApplication):
         self.new = QAction(icons.file(), "&New project")
+        self.new.triggered.connect(project_persistence.new)
 
         self.open = QAction(icons.folder(), "&Open project...")
         self.open.triggered.connect(load_save_dialog.make_open_hook(
             title="Open project", name_filter="JSON (*.json)", working_directory=os.path.expanduser("~"),
-            callback=project_persistence.open, parent=UiComponents().main_window
+            callback=project_persistence.open_, parent=UiComponents().main_window
         ))
 
         self.save = QAction(icons.diskette(), "&Save project...")

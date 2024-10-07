@@ -4,6 +4,11 @@ from midimiddleware.components.components import Components
 from midimiddleware.ui_components.ui_components import UiComponents
 
 
+def new():
+    Components().project_persistence.reset()
+    UiComponents().port_selector.reload_ports()
+
+
 def open_last_saved():
     settings = QSettings("Frangitron", "MIDI Middleware")
     filepath = settings.value('last_saved_project')
@@ -11,7 +16,7 @@ def open_last_saved():
     UiComponents().port_selector.reload_ports()
 
 
-def open(filepath):
+def open_(filepath):
     Components().project_persistence.open(filepath)
     UiComponents().port_selector.reload_ports()
 

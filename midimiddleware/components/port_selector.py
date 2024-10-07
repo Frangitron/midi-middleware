@@ -54,6 +54,17 @@ class PortSelector:
             self.virtual_out.close_port()
             self.virtual_out = None
 
+    def reset(self):
+        self.device_in_name = ""
+        self.device_out_name = ""
+        self.virtual_in_name = ""
+        self.virtual_out_name = ""
+
+        self.device_in: rtmidi.MidiIn = None
+        self.device_out: rtmidi.MidiOut = None
+        self.virtual_in: rtmidi.MidiIn = None
+        self.virtual_out: rtmidi.MidiOut = None
+
     def get_save_data(self) -> dict:
         return {
             "device_in": self.device_in_name,

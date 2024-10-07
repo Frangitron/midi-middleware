@@ -6,6 +6,9 @@ from midimiddleware.components.components import Components
 
 class ProjectPersistence:
 
+    def reset(self):
+        Components().port_selector.reset()
+
     def open(self, filepath):
         Components().engine.stop()
 
