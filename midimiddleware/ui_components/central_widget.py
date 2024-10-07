@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QHBoxLayout, QWidget
+from PySide6.QtWidgets import QGridLayout, QWidget
 
 from midimiddleware.ui_components.table import Table
 from midimiddleware.ui_components.ui_components import UiComponents
@@ -10,9 +10,10 @@ class CentralWidget(QWidget):
 
         self.table = Table()
 
-        layout = QHBoxLayout()
+        layout = QGridLayout()
 
-        layout.addWidget(self.table)
-        layout.addWidget(UiComponents().port_selector)
+        layout.addWidget(self.table, 0, 0)
+        layout.addWidget(UiComponents().monitor, 1, 0)
+        layout.addWidget(UiComponents().port_selector, 0, 1, 2, 1)
 
         self.setLayout(layout)

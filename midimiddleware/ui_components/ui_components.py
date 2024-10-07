@@ -8,3 +8,4 @@ class UiComponents(metaclass=SingletonMetaclass):
     actions = None
     main_window = None
     port_selector = None
+    monitor = None
