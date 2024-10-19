@@ -26,6 +26,6 @@ class Table(QGroupBox):
     def set_model(self, model):
         self._table_view.setModel(model)
 
-    def message_added(self):
+    def refresh(self):
         self._table_view.model().beginResetModel()
         self._table_view.model().endResetModel()

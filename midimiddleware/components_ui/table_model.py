@@ -26,7 +26,6 @@ class TableModel(QAbstractTableModel):
             return None
 
         translation: MessageTranslationInfo = Components().translator.get(index.row())
-        print(translation)
         return str(getattr(translation, self._fields[index.column()].name))
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):

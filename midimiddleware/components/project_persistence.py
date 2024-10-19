@@ -9,6 +9,7 @@ class ProjectPersistence:
     def reset(self):
         Components().engine.stop()
         Components().port_selector.reset()
+        Components().translator.reset()
         Components().engine.start()
 
     def open(self, filepath):
@@ -25,6 +26,9 @@ class ProjectPersistence:
             Components().port_selector.init_with_saved_data(
                 data["port_selector"]
             )
+            Components().translator.init_with_saved_data(
+                data["translations"]
+            )
 
         Components().engine.start()
 
@@ -33,7 +37,8 @@ class ProjectPersistence:
 
         data = {
             "file_version": 1,
-            "port_selector": Components().port_selector.get_save_data()
+            "port_selector": Components().port_selector.get_save_data(),
+            "translations": Components().translator.get_save_data()
         }
         with open(filepath, "w") as file:
             json.dump(data, file, indent=4)

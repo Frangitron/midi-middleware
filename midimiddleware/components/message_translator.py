@@ -20,6 +20,15 @@ class MessageTranslator:
     def __init__(self):
         self.translation_infos: dict[tuple, MessageTranslationInfo] = dict()
 
+    def reset(self):
+        self.translation_infos = dict()
+
+    def get_save_data(self) -> list:
+        return [(key, vars(translation)) for key, translation in self.translation_infos.items()]
+
+    def init_with_saved_data(self, data: dict):
+        self.translation_infos = {tuple(key): MessageTranslationInfo(**data) for key, data in data}
+
     def translate(self, message) -> tuple[mido.Message, mido.Message]:
         """
         Returns translated message for [device, virtual]

@@ -8,6 +8,8 @@ def new():
     Components().project_persistence.reset()
     ComponentsUi().port_selector.reload_ports()
     ComponentsUi().monitor.clear()
+    ComponentsUi().table.refresh()
+
 
 def open_last_saved():
     settings = QSettings("Frangitron", "MIDI Middleware")
@@ -19,6 +21,7 @@ def open_(filepath):
     Components().project_persistence.open(filepath)
     ComponentsUi().port_selector.reload_ports()
     ComponentsUi().monitor.clear()
+    ComponentsUi().table.refresh()
 
 
 def save(filepath):

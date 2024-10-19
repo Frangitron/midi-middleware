@@ -51,4 +51,4 @@ class Monitor(QWidget):
 
     def _add_to_table_clicked(self):
         Components().translator.add_message(self._message)
-        ComponentsUi().table.message_added()
+        ComponentsUi().table.refresh()
