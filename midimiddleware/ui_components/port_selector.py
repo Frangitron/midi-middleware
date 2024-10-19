@@ -13,8 +13,6 @@ class PortSelector(QWidget):
         self.device_in_port_combo_box.currentIndexChanged.connect(self.update_button_color)
         self.device_out_port_combo_box = QComboBox()
         self.device_out_port_combo_box.currentIndexChanged.connect(self.update_button_color)
-        self.virtual_in_port_combo_box = QComboBox()
-        self.virtual_in_port_combo_box.currentIndexChanged.connect(self.update_button_color)
         self.virtual_out_port_combo_box = QComboBox()
         self.virtual_out_port_combo_box.currentIndexChanged.connect(self.update_button_color)
 
@@ -43,8 +41,7 @@ class PortSelector(QWidget):
         layout.addWidget(group.make_group_grid(
             title="MIDI Virtual ports",
             widgets=(
-                (QLabel("In"), self.virtual_in_port_combo_box),
-                (QLabel("Out"), self.virtual_out_port_combo_box)
+                (QLabel("Out"), self.virtual_out_port_combo_box),
             ),
             stretch_last_column=True
         ), 1, 0, 1, 2)
@@ -63,7 +60,6 @@ class PortSelector(QWidget):
 
         combo.update(self.device_in_port_combo_box, in_ports, Components().port_selector.device_in_name)
         combo.update(self.device_out_port_combo_box, out_ports, Components().port_selector.device_out_name)
-        combo.update(self.virtual_in_port_combo_box, in_ports, Components().port_selector.virtual_in_name)
         combo.update(self.virtual_out_port_combo_box, out_ports, Components().port_selector.virtual_out_name)
 
     @error_reporting.error_reported("Apply port selection")
@@ -71,7 +67,6 @@ class PortSelector(QWidget):
         selected_ports = [
             self.device_in_port_combo_box.currentText(),
             self.device_out_port_combo_box.currentText(),
-            self.virtual_in_port_combo_box.currentText(),
             self.virtual_out_port_combo_box.currentText()
         ]
 
@@ -88,8 +83,7 @@ class PortSelector(QWidget):
             Components().port_selector.select_ports(
                 device_in=selected_ports[0],
                 device_out=selected_ports[1],
-                virtual_in=selected_ports[2],
-                virtual_out=selected_ports[3]
+                virtual_out=selected_ports[2]
             )
             Components().engine.start()
 
@@ -99,13 +93,11 @@ class PortSelector(QWidget):
         combos = [
             self.device_in_port_combo_box,
             self.device_out_port_combo_box,
-            self.virtual_in_port_combo_box,
             self.virtual_out_port_combo_box
         ]
         names = [
             Components().port_selector.device_in_name,
             Components().port_selector.device_out_name,
-            Components().port_selector.virtual_in_name,
             Components().port_selector.virtual_out_name
         ]
         red_needed = [combo.currentText() != name for combo, name in zip(combos, names)]
