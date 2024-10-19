@@ -9,6 +9,9 @@ class PortSelector(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self._in_ports: list[str] = list()
+        self._out_ports: list[str] = list()
+
         self.device_in_port_combo_box = QComboBox()
         self.device_in_port_combo_box.currentIndexChanged.connect(self.update_button_color)
         self.device_out_port_combo_box = QComboBox()
@@ -55,25 +58,44 @@ class PortSelector(QWidget):
 
     @error_reporting.error_reported("Reload available ports")
     def reload_ports(self):
-        in_ports = Components().port_selector.get_input_ports()
-        out_ports = Components().port_selector.get_output_ports()
+        self._in_ports = Components().port_selector.get_input_ports()
+        self._out_ports = Components().port_selector.get_output_ports()
 
-        combo.update(self.device_in_port_combo_box, in_ports, Components().port_selector.device_in_name, reset=True)
-        combo.update(self.device_out_port_combo_box, out_ports, Components().port_selector.device_out_name, reset=True)
-        combo.update(self.virtual_out_port_combo_box, out_ports, Components().port_selector.virtual_out_name, reset=True)
+        combo.update(
+            self.device_in_port_combo_box,
+            self._in_ports,
+            Components().port_selector.device_in_name,
+            reset=True
+        )
+        combo.update(
+            self.device_out_port_combo_box,
+            self._out_ports,
+            Components().port_selector.device_out_name,
+            reset=True
+        )
+        combo.update(
+            self.virtual_out_port_combo_box,
+            self._out_ports,
+            Components().port_selector.virtual_out_name,
+            reset=True
+        )
 
     @error_reporting.error_reported("Apply port selection")
     def apply(self):
-        selected_ports = [
-            self.device_in_port_combo_box.currentText(),
-            self.device_out_port_combo_box.currentText(),
-            self.virtual_out_port_combo_box.currentText()
+        # FIXME: this method should be more readable
+        device_in_index = self.device_in_port_combo_box.currentIndex()
+        device_out_index = self.device_out_port_combo_box.currentIndex()
+        virtual_out_index = self.virtual_out_port_combo_box.currentIndex()
+
+        selected_out_ports = [
+            self._out_ports[device_out_index] if device_out_index >= 0 else "",
+            self._out_ports[virtual_out_index] if virtual_out_index >= 0 else ""
         ]
 
         check_doubles = list()
-        for port in selected_ports:
+        for port in selected_out_ports:
             if port and port in check_doubles:
-                raise ValueError(f"A port can only be selected once: {port}")
+                raise ValueError(f"An out port can only be selected once: {port}")
             else:
                 check_doubles.append(port)
 
@@ -81,9 +103,9 @@ class PortSelector(QWidget):
         with hourglass.Hourglass():
             Components().engine.stop()
             Components().port_selector.select_ports(
-                device_in=selected_ports[0],
-                device_out=selected_ports[1],
-                virtual_out=selected_ports[2]
+                device_in=self._in_ports[device_in_index] if device_out_index >= 0 else "",
+                device_out=selected_out_ports[0],
+                virtual_out=selected_out_ports[1]
             )
             Components().engine.start()
 
@@ -100,7 +122,7 @@ class PortSelector(QWidget):
             Components().port_selector.device_out_name,
             Components().port_selector.virtual_out_name
         ]
-        red_needed = [combo.currentText() != name for combo, name in zip(combos, names)]
+        red_needed = [combo.currentText() not in name for combo, name in zip(combos, names)]
         if any(red_needed):
             self.apply_button.setStyleSheet("background-color: rgb(128, 30, 30)")
         else:

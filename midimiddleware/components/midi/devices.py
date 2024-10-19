@@ -1,8 +1,18 @@
 from typing import Callable
+
 import mido
+import rtmidi
 
 from midimiddleware.components.components import Components
 from midimiddleware.python_extensions.traceback_print_wrapper import traceback_print_wrapper
+
+
+def _find_in(word: str, words: list[str]) -> str:
+    for w in words:
+        if word and word in w:
+            return w
+
+    return ""
 
 
 class Devices:
@@ -20,25 +30,30 @@ class Devices:
             self._virtual_out.send(virtual)
 
     def open_ports(self):
-        self.close_ports()
+        ports_in = rtmidi.MidiIn().get_ports()
+        ports_out = rtmidi.MidiOut().get_ports()
+
         port_selector = Components().port_selector
+        device_in_name = _find_in(port_selector.device_in_name, ports_in)
+        device_out_name = _find_in(port_selector.device_out_name, ports_out)
+        virtual_out_name = _find_in(port_selector.virtual_out_name, ports_out)
+
+        self.close_ports()
+
         print(f"Opening ports: "
-              f"device='{port_selector.device_in_name}', "
-              f"'{port_selector.device_out_name}', "
-              f"virtual='{port_selector.virtual_out_name}'"
+              f"device='{device_in_name}', "
+              f"'{device_out_name}', "
+              f"virtual='{virtual_out_name}'"
         )
 
-        if port_selector.device_in_name:
-            self._device_in = mido.open_input(
-                port_selector.device_in_name,
-                callback=traceback_print_wrapper(self._message_in_callback)
-            )
+        if device_in_name:
+            self._device_in = mido.open_input(device_in_name, callback=traceback_print_wrapper(self._message_in_callback))
 
-        if port_selector.device_out_name:
-            self._device_out = mido.open_output(port_selector.device_out_name)
+        if device_out_name:
+            self._device_out = mido.open_output(device_out_name)
 
-        if port_selector.virtual_out_name:
-            self._virtual_out = mido.open_output(port_selector.virtual_out_name)
+        if virtual_out_name:
+            self._virtual_out = mido.open_output(virtual_out_name)
 
     def close_ports(self):
         print(f"Closing ports")

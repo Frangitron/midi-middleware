@@ -17,6 +17,10 @@ class Engine:
         self._devices.close_ports()
 
     def _handle_device_in(self, message: mido.Message):
+        # TODO check if this is always legit
+        if message.type == 'note_off':
+            message = mido.Message('note_on', note=message.note, velocity=0)
+
         translated_device, translated_virtual = Components().translator.translate(message)
         self._devices.send_messages(device=translated_device, virtual=translated_virtual)
 

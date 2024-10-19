@@ -2,6 +2,14 @@ import rtmidi
 import mido.backends.rtmidi  # this is for PyInstaller
 
 
+def _sanitize_port_name(name: str) -> str:
+    return " ".join(name.split(" ")[:-1])
+
+
+def _sanitize_port_names(names: list[str]) -> list[str]:
+    return sorted([_sanitize_port_name(name) for name in names])
+
+
 class PortSelector:
     def __init__(self) -> None:
         self._input_ports: list[str] = []
@@ -12,11 +20,11 @@ class PortSelector:
         self.virtual_out_name = ""
 
     def get_input_ports(self) -> list[str]:
-        self._input_ports = rtmidi.MidiIn().get_ports()
+        self._input_ports = _sanitize_port_names(rtmidi.MidiIn().get_ports())
         return self._input_ports
 
     def get_output_ports(self) -> list[str]:
-        self._output_ports = rtmidi.MidiOut().get_ports()
+        self._output_ports = _sanitize_port_names(rtmidi.MidiOut().get_ports())
         return self._output_ports
 
     def select_ports(self, device_in, device_out, virtual_out) -> None:

@@ -3,6 +3,18 @@ import mido
 from midimiddleware.components.message_translation_info import MessageTranslationInfo
 
 
+def _hash_message_address(message: mido.Message):
+    if message is None:
+        return tuple()
+
+    if message.type == "note_on":
+        return message.type, message.channel, message.note
+    elif message.type == "pitchwheel":
+        return message.type, message.channel
+    elif message.type == "control_change":
+        return message.type, message.channel, message.control
+
+
 class MessageTranslator:
 
     def __init__(self):
@@ -12,7 +24,7 @@ class MessageTranslator:
         """
         Returns translated message for [device, virtual]
         """
-        address = self._hash_message_address(message)
+        address = _hash_message_address(message)
         if address not in self.translation_infos:
             return  message, message
 
@@ -24,16 +36,32 @@ class MessageTranslator:
                 velocity=message.value
             )
 
+        return message, message
+
     def add_message(self, message: mido.Message):
-        self.translation_infos[self._hash_message_address(message)] = MessageTranslationInfo()
+        channel: int = message.channel
+        type_: str = message.type
 
-    def _hash_message_address(self, message: mido.Message):
-        if message is None:
-            return tuple()
+        if type_ in "note_on":
+            index: int = message.note
 
-        if message.type == "note_on":
-            return message.type, message.channel, message.note
-        elif message.type == "pitchwheel":
-            return message.type, message.channel
-        elif message.type == "control_change":
-            return message.type, message.channel, message.control
+        elif type_ == "control_change":
+            index: int = message.control
+
+        else:
+            index: int = -1
+
+        self.translation_infos[_hash_message_address(message)] = MessageTranslationInfo(
+            source_channel=channel,
+            source_type=type_,
+            source_index=index,
+            target_channel=channel,
+            target_type=type_,
+            target_index=index
+        )
+
+    def count(self) -> int:
+        return len(self.translation_infos)
+
+    def get(self, index: int) -> MessageTranslationInfo:
+        return list(self.translation_infos.values())[index]
