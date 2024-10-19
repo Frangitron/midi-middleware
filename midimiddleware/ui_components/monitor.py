@@ -1,9 +1,11 @@
 import mido
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QPushButton
 
 from pyside6helpers import icons, group
 
+from midimiddleware.python_extensions.call_rate_limiter import rate_limit
 
 class _MonitorLine(QWidget):
     def __init__(self, caption, parent=None):
@@ -85,6 +87,7 @@ class Monitor(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(group_)
 
+    @rate_limit()
     def set_messages(self, device_in: mido.Message, device_out: mido.Message, virtual_out: mido.Message):
         self.line_device_in.set_message(device_in)
         self.line_device_out.set_message(device_out)

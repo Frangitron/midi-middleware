@@ -19,7 +19,7 @@ class Engine:
 
     def _handle_device_in(self, message: mido.Message):
         translated_device, translated_virtual = self._translator.translate(message)
-        self._devices.send_message(device=translated_device, virtual=translated_virtual)
+        self._devices.send_messages(device=translated_device, virtual=translated_virtual)
 
         UiComponents().monitor.set_messages(
             device_in=message,

@@ -12,7 +12,7 @@ class Devices:
         self._virtual_out: mido.ports.BaseOutput = None
         self._message_in_callback = message_in_callback
 
-    def send_message(self, device, virtual):
+    def send_messages(self, device, virtual):
         if self._device_out is not None:
             self._device_out.send(device)
 
