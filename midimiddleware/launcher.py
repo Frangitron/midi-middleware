@@ -15,6 +15,7 @@ from midimiddleware.components_ui.components_ui import ComponentsUi
 from midimiddleware.components_ui.main_window.factory import create_main_window
 from midimiddleware.components_ui.monitor import Monitor
 from midimiddleware.components_ui.port_selector import PortSelector
+from midimiddleware.components_ui.table import Table
 
 
 class Launcher:
@@ -32,6 +33,7 @@ class Launcher:
         ComponentsUi().actions = Actions()
         ComponentsUi().monitor = Monitor()
         ComponentsUi().port_selector = PortSelector()
+        ComponentsUi().table = Table()
 
         app.aboutToQuit.connect(Components().engine.stop)
 

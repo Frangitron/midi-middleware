@@ -28,6 +28,9 @@ class MessageTranslator:
         self.translation_infos[self._hash_message_address(message)] = MessageTranslationInfo()
 
     def _hash_message_address(self, message: mido.Message):
+        if message is None:
+            return tuple()
+
         if message.type == "note_on":
             return message.type, message.channel, message.note
         elif message.type == "pitchwheel":

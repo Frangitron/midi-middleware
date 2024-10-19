@@ -9,3 +9,4 @@ class ComponentsUi(metaclass=SingletonMetaclass):
     main_window = None
     port_selector = None
     monitor = None
+    table = None

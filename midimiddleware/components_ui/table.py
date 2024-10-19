@@ -8,3 +8,7 @@ class Table(QGroupBox):
 
         layout = QHBoxLayout(self)
         layout.addWidget(QTableView())
+
+    def message_added(self):
+        # TODO: QAbstractTableModel etc
+        raise NotImplementedError
