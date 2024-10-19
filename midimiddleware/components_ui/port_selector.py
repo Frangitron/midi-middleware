@@ -103,7 +103,7 @@ class PortSelector(QWidget):
         with hourglass.Hourglass():
             Components().engine.stop()
             Components().port_selector.select_ports(
-                device_in=self._in_ports[device_in_index] if device_out_index >= 0 else "",
+                device_in=self._in_ports[device_in_index] if device_in_index >= 0 else "",
                 device_out=selected_out_ports[0],
                 virtual_out=selected_out_ports[1]
             )

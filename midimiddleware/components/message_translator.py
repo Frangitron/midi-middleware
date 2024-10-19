@@ -102,7 +102,7 @@ class MessageTranslator:
             index: int = message.control
 
         else:
-            index: int = -1
+            index: int = None
 
         self.translation_infos[_hash_message_address(message)] = MessageTranslationInfo(
             source_channel=channel + 1,
