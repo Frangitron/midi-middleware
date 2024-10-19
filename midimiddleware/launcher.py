@@ -9,11 +9,11 @@ from midimiddleware.components import resources
 from midimiddleware.components.components import Components
 from midimiddleware.components.engine import Engine
 from midimiddleware.components.project_persistence import ProjectPersistence
-from midimiddleware.ui_components.actions import Actions
-from midimiddleware.ui_components.main_window.factory import create_main_window
-from midimiddleware.ui_components.monitor import Monitor
-from midimiddleware.ui_components.port_selector import PortSelector
-from midimiddleware.ui_components.ui_components import UiComponents
+from midimiddleware.components_ui.actions import Actions
+from midimiddleware.components_ui.main_window.factory import create_main_window
+from midimiddleware.components_ui.monitor import Monitor
+from midimiddleware.components_ui.port_selector import PortSelector
+from midimiddleware.components_ui.components_ui import ComponentsUi
 
 
 class Launcher:
@@ -27,14 +27,14 @@ class Launcher:
     def exec(self):
         app = QApplication()
 
-        UiComponents().actions = Actions()
-        UiComponents().monitor = Monitor()
-        UiComponents().port_selector = PortSelector()
+        ComponentsUi().actions = Actions()
+        ComponentsUi().monitor = Monitor()
+        ComponentsUi().port_selector = PortSelector()
 
         app.aboutToQuit.connect(Components().engine.stop)
 
         css.load_onto(app)
-        UiComponents().actions.create_actions(app)
+        ComponentsUi().actions.create_actions(app)
 
         main_window = create_main_window(app)
         main_window.show()

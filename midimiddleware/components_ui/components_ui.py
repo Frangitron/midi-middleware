@@ -4,7 +4,7 @@ from midimiddleware.python_extensions.singleton_metaclass import SingletonMetacl
 
 
 @dataclass
-class UiComponents(metaclass=SingletonMetaclass):
+class ComponentsUi(metaclass=SingletonMetaclass):
     actions = None
     main_window = None
     port_selector = None

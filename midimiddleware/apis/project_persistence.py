@@ -1,13 +1,13 @@
 from PySide6.QtCore import QSettings
 
 from midimiddleware.components.components import Components
-from midimiddleware.ui_components.ui_components import UiComponents
+from midimiddleware.components_ui.components_ui import ComponentsUi
 
 
 def new():
     Components().project_persistence.reset()
-    UiComponents().port_selector.reload_ports()
-    UiComponents().monitor.clear()
+    ComponentsUi().port_selector.reload_ports()
+    ComponentsUi().monitor.clear()
 
 def open_last_saved():
     settings = QSettings("Frangitron", "MIDI Middleware")
@@ -17,8 +17,8 @@ def open_last_saved():
 
 def open_(filepath):
     Components().project_persistence.open(filepath)
-    UiComponents().port_selector.reload_ports()
-    UiComponents().monitor.clear()
+    ComponentsUi().port_selector.reload_ports()
+    ComponentsUi().monitor.clear()
 
 
 def save(filepath):

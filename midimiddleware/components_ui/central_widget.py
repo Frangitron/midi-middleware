@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QGridLayout, QWidget
 
-from midimiddleware.ui_components.table import Table
-from midimiddleware.ui_components.ui_components import UiComponents
+from midimiddleware.components_ui.table import Table
+from midimiddleware.components_ui.components_ui import ComponentsUi
 
 
 class CentralWidget(QWidget):
@@ -13,7 +13,7 @@ class CentralWidget(QWidget):
         layout = QGridLayout()
 
         layout.addWidget(self.table, 0, 0)
-        layout.addWidget(UiComponents().monitor, 1, 0)
-        layout.addWidget(UiComponents().port_selector, 0, 1, 2, 1)
+        layout.addWidget(ComponentsUi().monitor, 1, 0)
+        layout.addWidget(ComponentsUi().port_selector, 0, 1, 2, 1)
 
         self.setLayout(layout)

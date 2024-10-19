@@ -10,6 +10,10 @@ class Translator:
         """
         Returns translated message for [device, virtual]
         """
+        address = self._hash_message_address(message)
+        if address not in self.translations:
+            return  message, message
+
         if message.type == "control_change":
             return message, mido.Message(
                 type='note_on',
@@ -17,12 +21,6 @@ class Translator:
                 note=message.control,
                 velocity=message.value
             )
-
-        address = self._hash_message_address(message)
-        if address not in self.translations:
-            return  message, message
-
-        # TODO translate
 
     def _hash_message_address(self, message: mido.Message):
         if message.type == "note_on":
