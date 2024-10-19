@@ -2,8 +2,7 @@ from dataclasses import dataclass
 
 from PySide6.QtWidgets import QStyledItemDelegate
 
-from pyside6helpers.item_delegates.boolean import BooleanDelegate
-from pyside6helpers.item_delegates.list import ListDelegate
+from pyside6helpers.item_delegates import BooleanDelegate, IntegerDelegate, ListDelegate
 
 
 class AttributeUiInfo:
@@ -19,9 +18,9 @@ class TableMessageTranslationInfo:
     source_type: AttributeUiInfo = AttributeUiInfo("Type")
     source_index: AttributeUiInfo = AttributeUiInfo("Index")
 
-    target_channel: AttributeUiInfo = AttributeUiInfo("Target channel", editable=True)
+    target_channel: AttributeUiInfo = AttributeUiInfo("Target channel", editable=True, delegate=IntegerDelegate())
     target_type: AttributeUiInfo = AttributeUiInfo("Target type", editable=True, delegate=ListDelegate([
-        'note_on', 'note_off', 'control_change', 'program_change', 'pitchwheel', 'sysex'
+        'note_on', 'control_change', 'pitchwheel'
     ]))
     target_index: AttributeUiInfo = AttributeUiInfo("Target index", editable=True)
 

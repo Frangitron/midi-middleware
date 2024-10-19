@@ -1,3 +1,5 @@
+from gettext import translation
+
 import mido
 
 from midimiddleware.components.message_translation_info import MessageTranslationInfo
@@ -37,15 +39,33 @@ class MessageTranslator:
         if address not in self.translation_infos:
             return  message, message
 
-        if message.type == "control_change":
-            return message, mido.Message(
-                type='note_on',
-                channel=message.channel + 1,
-                note=message.control,
-                velocity=message.value
-            )
+        translation = self.translation_infos[address]
+        translated_virtual = mido.Message(
+            type=translation.target_type,
+            channel=translation.target_channel - 1,
+        )
+        value = None
+        if message.type == "pitchwheel":
+            value = message.pitch
 
-        return message, message
+        elif message.type == "control_change":
+            value = message.value
+
+        elif message.type == "note_on":
+            value = message.velocity
+
+        if translation.target_type == "note_on":
+            translated_virtual.note = translation.target_index
+            translated_virtual.velocity = value
+
+        elif translation.target_type == "control_change":
+            translated_virtual.control = translation.target_index
+            translated_virtual.value = value
+
+        elif translation.target_type == "pitchwheel":
+            translated_virtual.pitch = value
+
+        return message, translated_virtual
 
     def add_message(self, message: mido.Message):
         channel: int = message.channel
@@ -61,10 +81,10 @@ class MessageTranslator:
             index: int = -1
 
         self.translation_infos[_hash_message_address(message)] = MessageTranslationInfo(
-            source_channel=channel,
+            source_channel=channel + 1,
             source_type=type_,
             source_index=index,
-            target_channel=channel,
+            target_channel=channel + 1,
             target_type=type_,
             target_index=index
         )

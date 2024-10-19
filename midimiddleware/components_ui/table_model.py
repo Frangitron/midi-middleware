@@ -22,11 +22,14 @@ class TableModel(QAbstractTableModel):
         if not index.isValid():
             return None
 
+        if role == Qt.TextAlignmentRole:
+            return Qt.AlignCenter
+
         elif role != Qt.DisplayRole:
             return None
 
         translation: MessageTranslationInfo = Components().translator.get(index.row())
-        return str(getattr(translation, self._fields[index.column()].name))
+        return getattr(translation, self._fields[index.column()].name)
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
@@ -43,3 +46,15 @@ class TableModel(QAbstractTableModel):
             return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
 
         return Qt.ItemIsSelectable | Qt.ItemIsEnabled
+
+    def setData(self, index, value, role=Qt.EditRole):
+        if not index.isValid():
+            return False
+
+        translation: MessageTranslationInfo = Components().translator.get(index.row())
+        setattr(translation, self._fields[index.column()].name, value)
+
+        print(translation, self._fields[index.column()].name, value)
+
+        self.dataChanged.emit(index, index)
+        return True
