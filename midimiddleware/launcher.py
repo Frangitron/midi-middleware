@@ -8,7 +8,7 @@ from pyside6helpers import resources as ps6_resources
 from midimiddleware.components import resources
 from midimiddleware.components.components import Components
 from midimiddleware.components.engine import Engine
-from midimiddleware.components.project_persitence import ProjectPersistence
+from midimiddleware.components.project_persistence import ProjectPersistence
 from midimiddleware.ui_components.actions import Actions
 from midimiddleware.ui_components.main_window.factory import create_main_window
 from midimiddleware.ui_components.monitor import Monitor

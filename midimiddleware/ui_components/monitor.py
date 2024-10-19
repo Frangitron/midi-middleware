@@ -38,10 +38,10 @@ class _MonitorLine(QWidget):
         layout.addStretch()
 
     def clear(self):
-        self.label_channel = QLabel("Channel: --")
-        self.label_type = QLabel("Type: --")
-        self.label_id = QLabel("ID: --")
-        self.label_value = QLabel("Value: --")
+        self.label_channel.setText("Channel: --")
+        self.label_type.setText("Type: --")
+        self.label_id.setText("ID: --")
+        self.label_value.setText("Value: --")
 
     def set_message(self, message: mido.Message | None):
         if message is None:
@@ -92,3 +92,8 @@ class Monitor(QWidget):
         self.line_device_in.set_message(device_in)
         self.line_device_out.set_message(device_out)
         self.line_virtual_out.set_message(virtual_out)
+
+    def clear(self):
+        self.line_device_in.clear()
+        self.line_device_out.clear()
+        self.line_virtual_out.clear()

@@ -58,9 +58,9 @@ class PortSelector(QWidget):
         in_ports = Components().port_selector.get_input_ports()
         out_ports = Components().port_selector.get_output_ports()
 
-        combo.update(self.device_in_port_combo_box, in_ports, Components().port_selector.device_in_name)
-        combo.update(self.device_out_port_combo_box, out_ports, Components().port_selector.device_out_name)
-        combo.update(self.virtual_out_port_combo_box, out_ports, Components().port_selector.virtual_out_name)
+        combo.update(self.device_in_port_combo_box, in_ports, Components().port_selector.device_in_name, reset=True)
+        combo.update(self.device_out_port_combo_box, out_ports, Components().port_selector.device_out_name, reset=True)
+        combo.update(self.virtual_out_port_combo_box, out_ports, Components().port_selector.virtual_out_name, reset=True)
 
     @error_reporting.error_reported("Apply port selection")
     def apply(self):
