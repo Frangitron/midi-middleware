@@ -23,10 +23,10 @@ class Devices:
         self._message_in_callback = message_in_callback
 
     def send_messages(self, device, virtual):
-        if self._device_out is not None:
+        if self._device_out is not None and device is not None:
             self._device_out.send(device)
 
-        if self._virtual_out is not None:
+        if self._virtual_out is not None and virtual is not None:
             self._virtual_out.send(virtual)
 
     def open_ports(self):

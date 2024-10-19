@@ -22,6 +22,6 @@ class TableMessageTranslationInfo:
     target_type: AttributeUiInfo = AttributeUiInfo("Target type", editable=True, delegate=ListDelegate([
         'note_on', 'control_change', 'pitchwheel'
     ]))
-    target_index: AttributeUiInfo = AttributeUiInfo("Target index", editable=True)
+    target_index: AttributeUiInfo = AttributeUiInfo("Target index", editable=True, delegate=IntegerDelegate())
 
     is_toggle: AttributeUiInfo = AttributeUiInfo("Toggle", editable=True, delegate=BooleanDelegate())

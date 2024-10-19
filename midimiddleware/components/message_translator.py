@@ -21,6 +21,7 @@ class MessageTranslator:
 
     def __init__(self):
         self.translation_infos: dict[tuple, MessageTranslationInfo] = dict()
+        self._toggle_states: dict[tuple, bool] = dict()
 
     def reset(self):
         self.translation_infos = dict()
@@ -35,6 +36,8 @@ class MessageTranslator:
         """
         Returns translated message for [device, virtual]
         """
+        #
+        # Get translation
         address = _hash_message_address(message)
         if address not in self.translation_infos:
             return  message, message
@@ -44,9 +47,13 @@ class MessageTranslator:
             type=translation.target_type,
             channel=translation.target_channel - 1,
         )
+
+        #
+        # Get value
         value = None
+
         if message.type == "pitchwheel":
-            value = message.pitch
+            value = int(((message.pitch + 8192.0) / 16380.0) * 127.0)
 
         elif message.type == "control_change":
             value = message.value
@@ -54,7 +61,24 @@ class MessageTranslator:
         elif message.type == "note_on":
             value = message.velocity
 
+        #
+        # Get toggle
+        if translation.is_toggle and value < 64:
+            return message, None
+
+        if translation.is_toggle and value >= 64:
+            if address not in self._toggle_states:
+                self._toggle_states[address] = False
+
+            else:
+                self._toggle_states[address] = not self._toggle_states[address]
+
+            value = 127 if self._toggle_states[address] else 0
+
         if translation.target_type == "note_on":
+            if 0 >= translation.target_index >= 127:
+                raise ValueError(f"Note index is out of range: {translation.target_index} (0-127)")
+
             translated_virtual.note = translation.target_index
             translated_virtual.velocity = value
 
@@ -63,7 +87,7 @@ class MessageTranslator:
             translated_virtual.value = value
 
         elif translation.target_type == "pitchwheel":
-            translated_virtual.pitch = value
+            translated_virtual.pitch = int(((value / 127.0) * 16380.0) - 8192.0)
 
         return message, translated_virtual
 
