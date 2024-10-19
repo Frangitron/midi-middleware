@@ -11,3 +11,4 @@ class Components(metaclass=SingletonMetaclass):
     engine = None
     port_selector = PortSelector()
     project_persistence = None
+    translator = None

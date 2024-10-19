@@ -1,17 +1,19 @@
 import mido
 
+from midimiddleware.components.message_translation_info import MessageTranslationInfo
 
-class Translator:
+
+class MessageTranslator:
 
     def __init__(self):
-        self.translations: dict[tuple, bool] = dict()
+        self.translation_infos: dict[tuple, MessageTranslationInfo] = dict()
 
     def translate(self, message) -> tuple[mido.Message, mido.Message]:
         """
         Returns translated message for [device, virtual]
         """
         address = self._hash_message_address(message)
-        if address not in self.translations:
+        if address not in self.translation_infos:
             return  message, message
 
         if message.type == "control_change":
@@ -21,6 +23,9 @@ class Translator:
                 note=message.control,
                 velocity=message.value
             )
+
+    def add_message(self, message: mido.Message):
+        self.translation_infos[self._hash_message_address(message)] = MessageTranslationInfo()
 
     def _hash_message_address(self, message: mido.Message):
         if message.type == "note_on":
