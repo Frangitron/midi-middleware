@@ -7,13 +7,13 @@ from midimiddleware.components.components import Components
 class ProjectPersistence:
 
     def reset(self):
-        Components().engine.stop()
+        Components().devices.close_ports()
         Components().port_selector.reset()
         Components().translator.reset()
-        Components().engine.start()
+        Components().devices.open_ports()
 
     def open(self, filepath):
-        Components().engine.stop()
+        Components().devices.close_ports()
 
         if filepath is not None and os.path.exists(filepath):
             with open(filepath, "r") as file:
@@ -30,11 +30,9 @@ class ProjectPersistence:
                 data["translations"]
             )
 
-        Components().engine.start()
+        Components().devices.open_ports()
 
     def save(self, filepath):
-        Components().engine.stop()
-
         data = {
             "file_version": 1,
             "port_selector": Components().port_selector.get_save_data(),
@@ -42,5 +40,3 @@ class ProjectPersistence:
         }
         with open(filepath, "w") as file:
             json.dump(data, file, indent=4)
-
-        Components().engine.start()

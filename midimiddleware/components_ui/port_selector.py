@@ -101,13 +101,13 @@ class PortSelector(QWidget):
 
         # FIXME: this block should be in an API
         with hourglass.Hourglass():
-            Components().engine.stop()
+            Components().devices.close_ports()
             Components().port_selector.select_ports(
                 device_in=self._in_ports[device_in_index] if device_in_index >= 0 else "",
                 device_out=selected_out_ports[0],
                 virtual_out=selected_out_ports[1]
             )
-            Components().engine.start()
+            Components().devices.open_ports()
 
         self.update_button_color()
 

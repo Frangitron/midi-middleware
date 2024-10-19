@@ -152,3 +152,11 @@ class MessageTranslator:
 
     def get(self, index: int) -> MessageTranslationInfo:
         return list(self.translation_infos.values())[index]
+
+    def translation_index_from_message(self, message: mido.Message) -> int:
+        message_address = _hash_message_address(message)
+        for index, address in enumerate(self.translation_infos):
+            if address == message_address:
+                return index
+
+        return -1

@@ -1,7 +1,9 @@
+import mido
 from dataclasses import fields
 
 from PySide6.QtWidgets import QGroupBox, QTableView, QHBoxLayout
 
+from midimiddleware.components.components import Components
 from midimiddleware.components_ui.table_message_translation_info import TableMessageTranslationInfo
 
 
@@ -29,3 +31,10 @@ class Table(QGroupBox):
     def refresh(self):
         self._table_view.model().beginResetModel()
         self._table_view.model().endResetModel()
+
+    def select_translation_from_message(self, message: mido.Message):
+        index = Components().translator.translation_index_from_message(message)
+        if index != -1:
+            self._table_view.selectRow(index)
+        else:
+            self._table_view.clearSelection()

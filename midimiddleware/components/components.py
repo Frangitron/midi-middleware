@@ -8,7 +8,7 @@ from midimiddleware.python_extensions.singleton_metaclass import SingletonMetacl
 @dataclass
 class Components(metaclass=SingletonMetaclass):
     configuration = Configuration()
-    engine = None
+    devices = None
     port_selector = PortSelector()
     project_persistence = None
     translator = None

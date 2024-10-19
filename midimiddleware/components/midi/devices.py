@@ -1,10 +1,9 @@
-from typing import Callable
-
 import mido
 import rtmidi
 
 from midimiddleware.components.components import Components
 from midimiddleware.python_extensions.traceback_print_wrapper import traceback_print_wrapper
+from midimiddleware.apis.message_handling import handle_message
 
 
 def _find_in(word: str, words: list[str]) -> str:
@@ -16,11 +15,10 @@ def _find_in(word: str, words: list[str]) -> str:
 
 
 class Devices:
-    def __init__(self, message_in_callback: Callable[[mido.Message], None]):
+    def __init__(self):
         self._device_in: mido.ports.BaseInput = None
         self._device_out: mido.ports.BaseOutput = None
         self._virtual_out: mido.ports.BaseOutput = None
-        self._message_in_callback = message_in_callback
 
     def send_messages(self, device, virtual):
         if self._device_out is not None and device is not None:
@@ -47,7 +45,7 @@ class Devices:
         )
 
         if device_in_name:
-            self._device_in = mido.open_input(device_in_name, callback=traceback_print_wrapper(self._message_in_callback))
+            self._device_in = mido.open_input(device_in_name, callback=traceback_print_wrapper(handle_message))
 
         if device_out_name:
             self._device_out = mido.open_output(device_out_name)
