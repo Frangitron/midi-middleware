@@ -52,9 +52,9 @@ class TableModel(QAbstractTableModel):
             return False
 
         translation: MessageTranslationInfo = Components().translator.get(index.row())
-        setattr(translation, self._fields[index.column()].name, value)
+        translation.update(property_name=self._fields[index.column()].name, value=value)
 
-        print(translation, self._fields[index.column()].name, value)
-
-        self.dataChanged.emit(index, index)
+        index1 = self.index(index.row(), 0)
+        index2 = self.index(index.row(), self.columnCount() - 1)
+        self.dataChanged.emit(index1, index2)
         return True

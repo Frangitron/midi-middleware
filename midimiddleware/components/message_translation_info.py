@@ -12,3 +12,23 @@ class MessageTranslationInfo:
     target_index: int
 
     is_toggle: bool = False
+
+    def update(self, property_name, value):
+        print(f"update {property_name} to {value}")
+
+        setattr(self, property_name, value)
+
+        if property_name == "target_type" and value in ("note_on", "control_change"):
+            if not isinstance(self.target_index, int):
+                self.target_index = 60
+            else:
+                self.target_index = min(max(0, self.target_index), 127)
+
+        if property_name == "target_type" and value == "pitchwheel":
+            self.target_index = None
+
+        if property_name == "target_index" and self.target_type in ("note_on", "control_change"):
+            self.target_index = min(max(0, self.target_index), 127)
+
+        if property_name == "target_index" and self.target_type == "pitchwheel":
+            self.target_index = None
