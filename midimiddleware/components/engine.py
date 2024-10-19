@@ -21,11 +21,12 @@ class Engine:
         if message.type == 'note_off':
             message = mido.Message('note_on', note=message.note, velocity=0)
 
-        translated_device, translated_virtual = Components().translator.translate(message)
-        self._devices.send_messages(device=translated_device, virtual=translated_virtual)
+        translated_message = Components().translator.translate(message)
+        loopback_message = Components().translator.make_loopback(message)
+        self._devices.send_messages(device=loopback_message, virtual=translated_message)
 
         ComponentsUi().monitor.set_messages(
             device_in=message,
-            device_out=translated_device if self._devices.has_device_out() else None,
-            virtual_out=translated_virtual if self._devices.has_virtual_out() else None
+            device_out=loopback_message if self._devices.has_device_out() else None,
+            virtual_out=translated_message if self._devices.has_virtual_out() else None
         )

@@ -1,0 +1,12 @@
+---
+schema_version: 1
+devices:
+
+  - name: Behringer X-Touch
+    mappings: []  # defaults to same data
+
+  - name: Akai APCmini mk2
+    mappings:
+        notes:
+          - select_range: [0, 63]
+            map_value: [0, 91]

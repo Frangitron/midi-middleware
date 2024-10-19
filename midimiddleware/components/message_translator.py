@@ -1,4 +1,4 @@
-from gettext import translation
+from copy import copy
 
 import mido
 
@@ -32,18 +32,18 @@ class MessageTranslator:
     def init_with_saved_data(self, data: dict):
         self.translation_infos = {tuple(key): MessageTranslationInfo(**data) for key, data in data}
 
-    def translate(self, message) -> tuple[mido.Message, mido.Message]:
+    def translate(self, message) -> mido.Message:
         """
         Returns translated message for [device, virtual]
         """
         #
         # Get translation
         address = _hash_message_address(message)
-        if address not in self.translation_infos:
-            return  message, message
+        translation = self.translation_infos.get(address, None)
+        if translation is None:
+            return  message
 
-        translation = self.translation_infos[address]
-        translated_virtual = mido.Message(
+        translated_message = mido.Message(
             type=translation.target_type,
             channel=translation.target_channel - 1,
         )
@@ -63,33 +63,67 @@ class MessageTranslator:
 
         #
         # Get toggle
-        if translation.is_toggle and value < 64:
-            return message, None
+        if translation.is_toggle:
+            if value < 64:
+                return None
 
-        if translation.is_toggle and value >= 64:
             if address not in self._toggle_states:
                 self._toggle_states[address] = False
 
-            else:
-                self._toggle_states[address] = not self._toggle_states[address]
-
+            self._toggle_states[address] = not self._toggle_states[address]
             value = 127 if self._toggle_states[address] else 0
 
         if translation.target_type == "note_on":
             if 0 >= translation.target_index >= 127:
                 raise ValueError(f"Note index is out of range: {translation.target_index} (0-127)")
 
-            translated_virtual.note = translation.target_index
-            translated_virtual.velocity = value
+            translated_message.note = translation.target_index
+            translated_message.velocity = value
 
         elif translation.target_type == "control_change":
-            translated_virtual.control = translation.target_index
-            translated_virtual.value = value
+            translated_message.control = translation.target_index
+            translated_message.value = value
 
         elif translation.target_type == "pitchwheel":
-            translated_virtual.pitch = int(((value / 127.0) * 16380.0) - 8192.0)
+            translated_message.pitch = int(((value / 127.0) * 16380.0) - 8192.0)
 
-        return message, translated_virtual
+        return translated_message
+
+    def make_loopback(self, message: mido.Message):
+        #
+        # Get translation
+        address = _hash_message_address(message)
+        translation = self.translation_infos.get(address, None)
+
+        loopback_message = copy(message)
+
+        #
+        # Get value
+        value = None
+
+        if message.type == "pitchwheel":
+            value = int(((message.pitch + 8192.0) / 16380.0) * 127.0)
+
+        elif message.type == "control_change":
+            value = message.value
+
+        elif message.type == "note_on":
+            value = message.velocity
+
+        #
+        # Get toggle
+        if message.type == "note_on":
+            if translation is not None and translation.is_toggle :
+                if value < 64:
+                    return None
+
+                loopback_message.velocity = self._toggle_states[address] * 127
+
+            # FIXME !! Akai APCmini 2 specific, use device profile !!
+            if message.note <= 63:
+                loopback_message.velocity = 91 if loopback_message.velocity else 0
+
+        return loopback_message
 
     def add_message(self, message: mido.Message):
         channel: int = message.channel
