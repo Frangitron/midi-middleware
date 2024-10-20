@@ -6,14 +6,14 @@ Basic and easy to use MIDI middleware to enhance your controllers behaviour
 
 This software aims at enhancing a MIDI controller's behaviour in a simple way
 
+- Download .exe from releases
 - Create a virtual MIDI port (using [loopMIDI](https://www.tobias-erichsen.de/software/loopmidi.html) for example)
-- Plug in your controller
+- Plug in your APCmini 2
 - Open MIDI Middleware, select ports
-- Activate "Learn mode"
-- Move/Press your controller's controls, lines will be created in the table view
+- Move/Press your controller's controls
+- Add relevant messages to table
 - Edit parameters
-- Leave "Learn mode"
-- Save your mapping
+- Save your project
 
 ## Notes
 
