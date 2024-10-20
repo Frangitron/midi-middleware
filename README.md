@@ -1,5 +1,7 @@
 # MIDI Middleware
 
+![Main Window](midimiddleware/resources/main_window.jpeg)
+
 Basic and easy to use MIDI middleware to enhance your controllers behaviour
 
 ## Usage
