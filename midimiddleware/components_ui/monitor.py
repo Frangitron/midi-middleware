@@ -3,12 +3,13 @@ import mido
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QPushButton
 
+from pythonhelpers.call_rate_limiter import rate_limit
+
 from midimiddleware.components.components import Components
 from midimiddleware.components_ui.components_ui import ComponentsUi
 from pyside6helpers import icons, group
 
 from midimiddleware.components_ui.monitor_line import MonitorLine
-from midimiddleware.python_extensions.call_rate_limiter import rate_limit
 
 
 class Monitor(QWidget):

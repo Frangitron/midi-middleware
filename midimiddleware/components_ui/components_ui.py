@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from midimiddleware.python_extensions.singleton_metaclass import SingletonMetaclass
+from pythonhelpers.singleton_metaclass import SingletonMetaclass
 
 
 @dataclass

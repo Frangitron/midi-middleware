@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
+from pythonhelpers.singleton_metaclass import SingletonMetaclass
+
 from midimiddleware.components.configuration import Configuration
 from midimiddleware.components.midi.port_selector import PortSelector
-from midimiddleware.python_extensions.singleton_metaclass import SingletonMetaclass
 
 
 @dataclass

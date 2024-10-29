@@ -1,6 +1,7 @@
-mido[ports-rtmidi]
-python-rtmidi
 PySide6
-pyside6-helpers @ git+https://github.com/MrFrangipane/pyside6-helpers@main
 dateparser
 jinja2
+mido[ports-rtmidi]
+pyside6-helpers @ git+https://github.com/MrFrangipane/pyside6-helpers@main
+python-helpers @ git+https://github.com/MrFrangipane/python-helpers@main
+python-rtmidi

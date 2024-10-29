@@ -3,7 +3,7 @@ from dataclasses import fields
 
 from PySide6.QtWidgets import QGroupBox, QTableView, QHBoxLayout
 
-from midimiddleware.python_extensions.call_rate_limiter import rate_limit
+from pythonhelpers.call_rate_limiter import rate_limit
 
 from midimiddleware.components.components import Components
 from midimiddleware.components_ui.table_message_translation_info import TableMessageTranslationInfo

@@ -1,8 +1,9 @@
 import mido
 import rtmidi
 
+from pythonhelpers.traceback_print_wrapper import traceback_print_wrapper
+
 from midimiddleware.components.components import Components
-from midimiddleware.python_extensions.traceback_print_wrapper import traceback_print_wrapper
 from midimiddleware.apis.message_handling import handle_message
 
 

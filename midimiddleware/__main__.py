@@ -1,3 +1,3 @@
-from midimiddleware.launcher import Launcher
+from midimiddleware.components.launcher import Launcher
 
 Launcher().exec()
