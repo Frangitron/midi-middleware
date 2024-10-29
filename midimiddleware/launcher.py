@@ -12,7 +12,7 @@ from midimiddleware.components.midi.devices import Devices
 from midimiddleware.components.project_persistence import ProjectPersistence
 from midimiddleware.components_ui.actions import Actions
 from midimiddleware.components_ui.components_ui import ComponentsUi
-from midimiddleware.components_ui.main_window.factory import create_main_window
+from midimiddleware.components_ui.main_window_factory import create_main_window
 from midimiddleware.components_ui.monitor import Monitor
 from midimiddleware.components_ui.port_selector import PortSelector
 from midimiddleware.components_ui.table import Table

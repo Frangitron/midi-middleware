@@ -6,6 +6,7 @@ from midimiddleware.components_ui.components_ui import ComponentsUi
 
 def handle_message(message: mido.Message):
     # TODO check if this is always legit
+    # TODO move this to translator or other component ?
     if message.type == 'note_off':
         message = mido.Message('note_on', note=message.note, velocity=0)
 
