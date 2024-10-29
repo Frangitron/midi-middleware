@@ -2,7 +2,9 @@ from dataclasses import dataclass
 
 from PySide6.QtWidgets import QStyledItemDelegate
 
-from pyside6helpers.item_delegates import BooleanDelegate, IntegerDelegate, ListDelegate
+from pyside6helpers.item_delegates import BooleanDelegate, IntegerDelegate, ListDelegate, ColorListDelegate
+
+from midimiddleware.components.configuration import Configuration
 
 
 class AttributeUiInfo:
@@ -25,3 +27,10 @@ class TableMessageTranslationInfo:
     target_index: AttributeUiInfo = AttributeUiInfo("Target index", editable=True, delegate=IntegerDelegate())
 
     is_toggle: AttributeUiInfo = AttributeUiInfo("Toggle", editable=True, delegate=BooleanDelegate())
+
+    on_color: AttributeUiInfo = AttributeUiInfo("On color", editable=True, delegate=ColorListDelegate(
+        Configuration().colors)
+    )
+    off_color: AttributeUiInfo = AttributeUiInfo("Off color", editable=True, delegate=ColorListDelegate(
+        Configuration().colors
+    ))

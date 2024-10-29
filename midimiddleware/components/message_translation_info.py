@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -11,7 +11,11 @@ class MessageTranslationInfo:
     target_type: str
     target_index: int
 
+    on_color: str = ""
+    off_color: str = ""
+
     is_toggle: bool = False
+
 
     def update(self, property_name, value):
         setattr(self, property_name, value)

@@ -2,6 +2,7 @@ from copy import copy
 
 import mido
 
+from midimiddleware.components.configuration import Configuration
 from midimiddleware.components.message_translation_info import MessageTranslationInfo
 
 
@@ -97,6 +98,9 @@ class MessageTranslator:
 
         loopback_message = copy(message)
 
+        if translation is None:
+            return loopback_message
+
         #
         # Get value
         value = None
@@ -121,7 +125,10 @@ class MessageTranslator:
 
             # FIXME !! Akai APCmini 2 specific, use device profile !!
             if message.note <= 63:
-                loopback_message.velocity = 91 if loopback_message.velocity else 0
+                if loopback_message.velocity and translation.on_color:
+                    loopback_message.velocity = Configuration().colors.index(translation.on_color)
+                elif translation.off_color:
+                    loopback_message.velocity = Configuration().colors.index(translation.off_color)
 
         return loopback_message
 
