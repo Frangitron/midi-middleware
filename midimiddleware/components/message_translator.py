@@ -167,3 +167,7 @@ class MessageTranslator:
                 return index
 
         return -1
+
+    def remove_message_by_index(self, index: int):
+        key = list(self.translation_infos.keys())[index]
+        self.translation_infos.pop(key)

@@ -1,12 +1,13 @@
 import mido
 from dataclasses import fields
 
-from PySide6.QtWidgets import QGroupBox, QTableView, QHBoxLayout
+from PySide6.QtWidgets import QGroupBox, QHBoxLayout
 
 from pythonhelpers.call_rate_limiter import rate_limit
 
 from midimiddleware.components.components import Components
 from midimiddleware.components_ui.table_message_translation_info import TableMessageTranslationInfo
+from midimiddleware.qt_extensions.table_view import TableView
 
 
 class Table(QGroupBox):
@@ -14,9 +15,10 @@ class Table(QGroupBox):
         super().__init__(parent)
         self.setTitle("Table")
 
-        self._table_view = QTableView()
+        self._table_view = TableView()
         self._table_view.setShowGrid(False)
         self._table_view.setAlternatingRowColors(True)
+        self._table_view.rowDeletionRequested.connect(self._remove_row)
 
         for index, field in enumerate(fields(TableMessageTranslationInfo)):
             if field.default.delegate is None:
@@ -41,3 +43,7 @@ class Table(QGroupBox):
             self._table_view.selectRow(index)
         else:
             self._table_view.clearSelection()
+
+    def _remove_row(self, row: int):
+        Components().translator.remove_message_by_index(row)
+        self.refresh()
