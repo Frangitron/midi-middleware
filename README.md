@@ -10,12 +10,16 @@ This software aims at enhancing a MIDI controller's behaviour in a simple way
 
 - Download .exe from releases
 - Create a virtual MIDI port (using [loopMIDI](https://www.tobias-erichsen.de/software/loopmidi.html) for example)
-- Plug in your APCmini 2
+- Plug in your APCmini 2 / X-Touch Extender
 - Open MIDI Middleware, select ports
 - Move/Press your controller's controls
 - Add relevant messages to table
 - Edit parameters
 - Save your project
+
+A quick demo can be found on [Youtube](https://youtu.be/juP7a22mlzY)
+
+[![Youtube](midimiddleware/resources/youtube.jpeg)](https://youtu.be/juP7a22mlzY)
 
 ## Notes
 
